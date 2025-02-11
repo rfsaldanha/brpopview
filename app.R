@@ -4,7 +4,7 @@ library(bslib)
 
 # Interface
 ui <- page_navbar(
-  title = "Título do app", 
+  title = "BR Pop", 
   theme = bs_theme(bootswatch = "shiny"),
 
   # Logo
@@ -51,7 +51,7 @@ ui <- page_navbar(
 
   # Map page
   nav_panel(
-    title = "Página A",
+    title = "População",
 
     # Sidebar
     layout_sidebar(
@@ -72,7 +72,7 @@ ui <- page_navbar(
 
   # Graphs page
   nav_panel(
-    title = "Página B",
+    title = "Indicadores básicos",
 
     layout_sidebar(
       sidebar = sidebar(
@@ -92,7 +92,7 @@ ui <- page_navbar(
 
   # About page
   nav_panel(
-    title = "Página B",
+    title = "Dados e conceitos",
     card(
       card_header("Card title"),
       p("Bla bla bla.")
