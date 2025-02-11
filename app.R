@@ -59,7 +59,34 @@ ui <- page_navbar(
     # Sidebar
     layout_sidebar(
       sidebar = sidebar(
+        # Select municipality
+        selectizeInput(
+          inputId = "mun", 
+          label = "Município", 
+          choices = NULL
+        ),
         
+        # Select sex
+        selectizeInput(
+          inputId = "sex", 
+          label = "Sexo", 
+          choices = c("Ambos", "Masculino", "Feminino")
+        ),
+
+        # Select age group
+        selectizeInput(
+          inputId = "age_group", 
+          label = "Faixa etária", 
+          choices = c("Todas")
+        ),
+
+        # Select population source
+        selectizeInput(
+          inputId = "pop_source", 
+          label = "Estimativas populacionais", 
+          choices = c("RIPSA/DEMAS","DataSUS", "UFRN", "IBGE/TCU"),
+          multiple = TRUE
+        ),
       ),
 
       # Card
