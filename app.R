@@ -1,6 +1,9 @@
 # Packages
 library(shiny)
 library(bslib)
+library(brpop)
+library(vchartr)
+library(dplyr)
 
 # Interface
 ui <- page_navbar(
