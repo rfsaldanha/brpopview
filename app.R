@@ -5,6 +5,13 @@ library(brpop)
 library(vchartr)
 library(dplyr)
 
+# Read municipality seats data
+mun_seats <- readRDS("data/mun_seats.rds")
+
+# Municipality list for selector
+mun_names <- mun_seats$code_muni
+names(mun_names) <- paste(mun_seats$name_muni, "-", mun_seats$abbrev_state)
+
 # Interface
 ui <- page_navbar(
   title = "BR Pop", 
@@ -85,7 +92,8 @@ ui <- page_navbar(
           inputId = "pop_source", 
           label = "Estimativas populacionais", 
           choices = c("RIPSA/DEMAS","DataSUS", "UFRN", "IBGE/TCU"),
-          multiple = TRUE
+          multiple = TRUE,
+          selected = c("RIPSA/DEMAS","DataSUS")
         ),
       ),
 
@@ -147,7 +155,15 @@ ui <- page_navbar(
 
 # Server
 server <- function(input, output, session) {
-  
+  # Update municipality list
+  observe(({
+    updateSelectizeInput(
+      session = session, 
+      server = TRUE,
+      inputId = "mun",
+      choices = mun_names
+    )
+  }))
 
 }
 
