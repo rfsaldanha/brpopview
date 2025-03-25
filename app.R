@@ -28,23 +28,30 @@ pop <- readRDS(file = "data/pop.rds")
 
 # Interface
 ui <- page_navbar(
-  title = "Estimativas populacionais no Brasil", 
+  title = "Estimativas populacionais no Brasil",
   theme = bs_theme(bootswatch = "cosmo"),
 
   # Logo
   tags$head(
     tags$script(
-      HTML('$(document).ready(function() {
+      HTML(
+        '$(document).ready(function() {
              $(".navbar .container-fluid")
                .append("<img id = \'myImage\' src=\'logo_icict_150.png\' align=\'right\' height = \'57.5px\'>"  );
-            });')),
+            });'
+      )
+    ),
     tags$style(
-      HTML('@media (max-width:992px) { #myImage { position: fixed; right: 10%; top: 0.5%; }}')
-    )),
+      HTML(
+        '@media (max-width:992px) { #myImage { position: fixed; right: 10%; top: 0.5%; }}'
+      )
+    )
+  ),
 
   # Translation
   tags$script(
-    HTML("
+    HTML(
+      "
       $(document).ready(function() {
         // Change the text 'Expand' in all tooltips
         $('.card.bslib-card bslib-tooltip > div').each(function() {
@@ -70,7 +77,8 @@ ui <- page_navbar(
           });
         });
       });
-    ")
+    "
+    )
   ),
 
   # Map page
@@ -82,18 +90,18 @@ ui <- page_navbar(
       sidebar = sidebar(
         # Select municipality
         selectizeInput(
-          inputId = "mun", 
-          label = "Município", 
+          inputId = "mun",
+          label = "Município",
           choices = NULL
         ),
 
         # Select population source
         selectizeInput(
-          inputId = "pop_source", 
-          label = "Estimativas populacionais", 
-          choices = c("RIPSA/DEMAS","DataSUS", "UFRN", "IBGE/TCU"),
+          inputId = "pop_source",
+          label = "Estimativas populacionais",
+          choices = c("RIPSA/DEMAS", "DataSUS", "UFRN", "IBGE/TCU"),
           multiple = TRUE,
-          selected = c("RIPSA/DEMAS","DataSUS", "UFRN")
+          selected = c("RIPSA/DEMAS", "DataSUS", "UFRN")
         ),
       ),
 
@@ -101,35 +109,44 @@ ui <- page_navbar(
       card(
         full_screen = TRUE,
         card_body(
-          class = "p-0", 
+          class = "p-0",
           vchartOutput(outputId = "graph_pop")
         )
       )
-
     )
   ),
 
   # About page
   nav_panel(
     title = "Fontes dos dados",
-    p("Os dados foram extraídos do pacote {brpop}, conforme detalhado a seguir."),
+    p(
+      "Os dados foram extraídos do pacote {brpop}, conforme detalhado a seguir."
+    ),
     accordion(
       multiple = FALSE,
       accordion_panel(
         "RIPSA/DEMAS",
-        p("Estimativas populacionais municipaisde 2000 a 2024 por sexo e idade, calculadas pelo Ministério da Saúde/DEMAS para o uso em indicadores de saúde.")
+        p(
+          "Estimativas populacionais municipaisde 2000 a 2024 por sexo e idade, calculadas pelo Ministério da Saúde/DEMAS para o uso em indicadores de saúde."
+        )
       ),
       accordion_panel(
         "DataSUS",
-        p("Estimativas populacionais municipais de 2000 a 2022, por sexo e idade.")
+        p(
+          "Estimativas populacionais municipais de 2000 a 2022, por sexo e idade."
+        )
       ),
       accordion_panel(
         "UFRN",
-        p("Estimativas populacionais municipais de 2010 a 2030, por sexo e idade, calculadas pelo Departamento de Demografia da UFRN.")
+        p(
+          "Estimativas populacionais municipais de 2010 a 2030, por sexo e idade, calculadas pelo Departamento de Demografia da UFRN."
+        )
       ),
       accordion_panel(
         "IBGE/TCU",
-        p("Estimativas populacionais municipais anuais enviadas pelo IBGE para o Tribunal de Contas da União (TCU).")
+        p(
+          "Estimativas populacionais municipais anuais enviadas pelo IBGE para o Tribunal de Contas da União (TCU)."
+        )
       )
     )
   )
@@ -138,15 +155,17 @@ ui <- page_navbar(
 # Server
 server <- function(input, output, session) {
   # Update municipality list
-  observe(({
-    updateSelectizeInput(
-      session = session, 
-      server = TRUE,
-      inputId = "mun",
-      choices = mun_names,
-      selected = "330455"
-    )
-  }))
+  observe(
+    ({
+      updateSelectizeInput(
+        session = session,
+        server = TRUE,
+        inputId = "mun",
+        choices = mun_names,
+        selected = "330455"
+      )
+    })
+  )
 
   # Render population graph
   output$graph_pop <- renderVchart({
@@ -168,9 +187,10 @@ server <- function(input, output, session) {
       v_mark_vline(x = "2022") |>
       v_scale_y_continuous(
         labels = format_num_d3(
-          format = ",.0f", 
-          locale = "pt-BR")
-        ) |>
+          format = ",.0f",
+          locale = "pt-BR"
+        )
+      ) |>
       v_labs(
         title = "Estimativas populacionais",
         x = "Ano",
@@ -181,9 +201,7 @@ server <- function(input, output, session) {
         position = "middle",
         item = list(focus = TRUE)
       )
-
   })
-
 }
 
 shinyApp(ui, server)
