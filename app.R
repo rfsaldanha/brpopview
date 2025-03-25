@@ -103,6 +103,13 @@ ui <- page_navbar(
           multiple = TRUE,
           selected = c("RIPSA/DEMAS", "DataSUS", "UFRN")
         ),
+
+        # Graph axis
+        checkboxInput(
+          "axis_y_zero",
+          label = "Iniciar eixo Y em zero ",
+          value = FALSE
+        ),
       ),
 
       # Card
@@ -172,7 +179,7 @@ server <- function(input, output, session) {
     req(input$mun)
     req(input$pop_source)
 
-    pop |>
+    g <- pop |>
       filter(code_muni == substr(input$mun, 0, 6)) |>
       filter(source %in% input$pop_source) |>
       arrange(year) |>
@@ -201,6 +208,16 @@ server <- function(input, output, session) {
         position = "middle",
         item = list(focus = TRUE)
       )
+
+    if (isTRUE(input$axis_y_zero)) {
+      g <- g |>
+        v_scale_y_continuous(
+          min = 0
+        )
+    }
+
+    # Return
+    g
   })
 }
 
